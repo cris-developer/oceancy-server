@@ -28,7 +28,7 @@ const userSchema = new Schema(
 
       type: Schema.Types.ObjectId, ref: 'Activity' 
 
-    }
+    },
     isAdmin :{
       type :Boolean,
       default :false,
