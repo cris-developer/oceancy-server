@@ -10,7 +10,7 @@ router.get("/", (req, res, next) => {
   console.log ('STEP 1');
   Destination.find()
     .then((destinations) => {
-      res.status.json(destinations);
+      res.status(200).json(destinations);
     })
     .catch((error) => {
       res.status(500).json({

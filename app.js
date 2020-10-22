@@ -24,10 +24,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', require('./routes/index.routes'));
 app.use("/user", require("./routes/user.routes"));
 app.use("/destinations",require("./routes/destinations.routes"));
 app.use("/activities",require("./routes/activities.routes"));
+app.use('/', require('./routes/index.routes'));
 
 
 module.exports = app;
