@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Destination = require('../models/Destination.model');
+const Activity = require('../models/Activity.model');
 const User = require('../models/User.model');
 
 //require('dotenv').config();
@@ -7,7 +8,8 @@ const User = require('../models/User.model');
 // require database configuration
 //require('dotenv').config();
 require('../config/db.config.js');
-  
+
+//FEEDING DESTINATIONS
   const destinations = [
     {
       "name": "Australia",
@@ -56,7 +58,7 @@ require('../config/db.config.js');
     },
     {
       "name": "Belize",
-      "photoUrl": "https://image.tmdb.org/t/p/w500/h1co81QaT2nJA41Sb7eZwmWl1L2.jpg",
+      "photoUrl": "https://images.unsplash.com/photo-1585540036061-a57122a5aa3f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3634&q=80",
       "id": "56792412-8fda-4e10-b5ec-9cade83b167d"
     },
     {
@@ -119,4 +121,129 @@ Destination.create(destinations)
     mongoose.connection.close();
   })
   .catch(err => console.log(`An error occurred while creating destinations: ${err}`));
-  
+
+// FEEDING ACTIVITIES
+  const activities = [
+    {
+      "name": "Diving in Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "2abbdb9b-6034-452c-871f-2913fd42fbd0"
+    },
+    {
+      "name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "4fe4d8ef-0fac-4bd9-8c02-ed89b668b2a9"
+    },
+      {"name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "c5fcd5c6-bb11-433d-8c19-6bbd90653966"
+    },
+    { "name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "95eef6fa-fd7c-49f6-b799-40c045918dba"
+    },
+    { "name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "596ecfa1-7bb1-4704-87d5-c766745c2b1a"
+    },
+    { "name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "9a28a4f5-00ab-45b3-9717-4bdbaa29b03e"
+    },
+    { "name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "11a91271-8bd6-4f9b-bc05-6dded961c311"
+    },
+    {
+      "name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+      "id": "e31bc0bb-85f5-4fd5-8b6f-466e08be8041"
+    },
+    {
+      
+      "name": "Sailing Maldives",
+      "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
+      "description": "Enjoy diving in the Maldives",
+      "startDate":"2020-02-13T18:58:56.267Z",
+      "endDate":"2020-02-13T18:58:56.267Z",
+      "duration": "180 min",
+      "price":"30 €",
+      "type":"Sailing",
+      "address":"Elm Street",
+      "destination":"Maldives",
+       "id": "0f65363c-a9ec-4e3a-a4af-f337940b3390"
+    },
+    
+    
+]
+
+Activity.create(activities)
+  .then(activitiesFromDB => {
+    console.log(`Created ${destinationsFromDB.length} activities`);
+    mongoose.connection.close();
+  })
+  .catch(err => console.log(`An error occurred while creating activities: ${err}`));

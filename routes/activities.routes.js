@@ -6,35 +6,46 @@ const Activity = require("../models/Activity.model");
 //DISPLAY  LIST OF ACTIVITIES (tours) ///////////////////////
 
 router.get("/", (req, res, next) => {
+  console.log ('Displaying ALL activities')
    Activity.find()
     .then((activities) => {
-      res.status.json(activities);
+      res.status(200).json(activities);
     })
     .catch((error) => {
+      console.log(error);
       res.status(500).json({
         errorMessage: error,
       });
     });
 });
 
-// DISPLAY AN EVENT
+// DISPLAY AN ACTIVITY
 
-
-
+router.get("/:id", (req, res, next) => {
+  console.log ('Displaying ONE SINGLE activity')
+  Activity.findById(id)
+   .then((activities) => {
+    res.status(200).send();
+   })
+   .catch((error) => {
+     res.status(500).json({
+       errorMessage: error,
+     });
+   });
+});
 
 
 //  CREATE A NEW ACTIVITY (tour) //////////////////////////////
 
 router.post("/create", (req, res, next) => {
     console.log ('Creating activities')
-  const { name, starDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
-  
-  const id = req.session.currentUser._id;
-  
-  Activity.create({ 
+    //return res.json(true)
+  const { name, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
+  console.log ('req.body:',req.body);
+ Activity.create({ 
       name, 
-      starDate,
-      endDate,
+      //startDate,
+     // endDate,
       duration,
       destination,
       price,
@@ -46,6 +57,7 @@ router.post("/create", (req, res, next) => {
       res.status(200).send(activity);
     })
     .catch((error) => {
+      console.log(error)
       res.status(500).json({
         errorMessage: error,
       });
@@ -54,6 +66,7 @@ router.post("/create", (req, res, next) => {
 
 //  DELETE ACTIVITY (tour) //////////////////////////////
 router.delete("/:id", (req, res, next) => {
+  console.log ('Deleting activities')
   const { activityId } = req.params;
   Activity.findByIdAndDelete({ _id: id })
     .then(() => res.status(200).send())
@@ -64,9 +77,12 @@ router.delete("/:id", (req, res, next) => {
     });
 });
 // UPDATE AND EDIT ACTIVITY (tour)
-router.put("/:id", (req, res, next) => {
-    const { activityId } = req.params;
+router.put("/update/:id", (req, res, next) => {
+   console.log ('I AM UPDATING DATA FROM SERVER')
+    const {id } = req.params;
     const { name, starDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
+    console.log ('req.params:' ,req.params)
+    console.log ('req.body:',req.body)
     Activity.findByIdAndUpdate({
          _id: id }, 
          { name: name, 
