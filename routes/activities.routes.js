@@ -77,16 +77,16 @@ router.delete("/:id", (req, res, next) => {
     });
 });
 // UPDATE AND EDIT ACTIVITY (tour)
-router.put("/update/:id", (req, res, next) => {
+router.post("/update/:id", (req, res, next) => {
    console.log ('I AM UPDATING DATA FROM SERVER')
     const {id } = req.params;
-    const { name, starDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
+    const { name, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
     console.log ('req.params:' ,req.params)
     console.log ('req.body:',req.body)
     Activity.findByIdAndUpdate({
          _id: id }, 
          { name: name, 
-           starDate: endDate, 
+           startDate: endDate, 
            duration:duration, 
            destination :destination, 
            price:price, 

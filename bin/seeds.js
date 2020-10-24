@@ -135,7 +135,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "2abbdb9b-6034-452c-871f-2913fd42fbd0"
+      
     },
     {
       "name": "Sailing Maldives",
@@ -148,7 +148,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "4fe4d8ef-0fac-4bd9-8c02-ed89b668b2a9"
+      
     },
       {"name": "Sailing Maldives",
       "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
@@ -160,7 +160,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "c5fcd5c6-bb11-433d-8c19-6bbd90653966"
+      
     },
     { "name": "Sailing Maldives",
       "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
@@ -172,7 +172,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "95eef6fa-fd7c-49f6-b799-40c045918dba"
+      
     },
     { "name": "Sailing Maldives",
       "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
@@ -184,7 +184,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "596ecfa1-7bb1-4704-87d5-c766745c2b1a"
+      
     },
     { "name": "Sailing Maldives",
       "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
@@ -196,7 +196,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "9a28a4f5-00ab-45b3-9717-4bdbaa29b03e"
+     
     },
     { "name": "Sailing Maldives",
       "photoUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80",
@@ -208,7 +208,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "11a91271-8bd6-4f9b-bc05-6dded961c311"
+      
     },
     {
       "name": "Sailing Maldives",
@@ -221,7 +221,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-      "id": "e31bc0bb-85f5-4fd5-8b6f-466e08be8041"
+      
     },
     {
       
@@ -235,7 +235,7 @@ Destination.create(destinations)
       "type":"Sailing",
       "address":"Elm Street",
       "destination":"Maldives",
-       "id": "0f65363c-a9ec-4e3a-a4af-f337940b3390"
+      
     },
     
     
