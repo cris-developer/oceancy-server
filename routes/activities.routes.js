@@ -23,9 +23,12 @@ router.get("/", (req, res, next) => {
 
 router.get("/:id", (req, res, next) => {
   console.log ('Displaying ONE SINGLE activity')
+
+  const {id} = req.params;
+
   Activity.findById(id)
    .then((activities) => {
-    res.status(200).send();
+    res.status(200).send(activities);
    })
    .catch((error) => {
      res.status(500).json({
@@ -102,6 +105,43 @@ router.post("/update/:id", (req, res, next) => {
         });
       });
   })
+
+
+// ATTEND AND ACTIVITY
+
+
+router.post("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const userId = req.session.currentUser._id;
+
+  Activity.findByIdAndUpdate(
+    id,
+    { $addToSet: { attendees: [userId] } },
+    { new: true }
+  )
+    .then((updatedEvent) => {
+
+      res.status(200).send();
+      // User.findByIdAndUpdate(
+      //   userId,
+      //   { $addToSet: { activitiesAttending: updatedEvent._id } },
+      //   { new: true }
+      // ).then((updatedUser) => {
+      //   req.session.currentUser = updatedUser;
+      //   res.redirect(`/events/${id}`);
+      //   //console.log("Updated activity: ", updatedActivity);
+      //   //console.log("Updated activity: ", updatedUser);
+      // });
+    })
+
+    .catch((error) => {
+      console.log("Error while updating activity: ", error);
+      res.status(400).json({
+        errorMessage: error,
+      });
+    });
+});
 
 // FILTERED PAGES //////////////////////////////////
 
