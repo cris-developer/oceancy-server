@@ -118,7 +118,7 @@ require('../config/db.config.js');
 Destination.create(destinations)
   .then(destinationsFromDB => {
     console.log(`Created ${destinationsFromDB.length} destinations`);
-    mongoose.connection.close();
+    //mongoose.connection.close();
   })
   .catch(err => console.log(`An error occurred while creating destinations: ${err}`));
 
@@ -243,7 +243,7 @@ Destination.create(destinations)
 
 Activity.create(activities)
   .then(activitiesFromDB => {
-    console.log(`Created ${destinationsFromDB.length} activities`);
+    console.log(`Created ${activitiesFromDB.length} activities`);
     mongoose.connection.close();
   })
   .catch(err => console.log(`An error occurred while creating activities: ${err}`));

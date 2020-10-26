@@ -70,7 +70,7 @@ router.post("/create", (req, res, next) => {
 //  DELETE ACTIVITY (tour) //////////////////////////////
 router.delete("/:id", (req, res, next) => {
   console.log ('Deleting activities')
-  const { activityId } = req.params;
+  const { id } = req.params;
   Activity.findByIdAndDelete({ _id: id })
     .then(() => res.status(200).send())
     .catch((error) => {
@@ -89,13 +89,15 @@ router.post("/update/:id", (req, res, next) => {
     Activity.findByIdAndUpdate({
          _id: id }, 
          { name: name, 
-           startDate: endDate, 
+           startDate : startDate,
+           endDate: endDate, 
            duration:duration, 
            destination :destination, 
            price:price, 
            type :type, 
            address: address, 
-           photoUrl: photoUrl })
+           photoUrl: photoUrl },
+           { new: true })
       .then(() => {
         res.status(200).send();
       })
@@ -113,11 +115,11 @@ router.post("/update/:id", (req, res, next) => {
 router.post("/:id", (req, res) => {
   const { id } = req.params;
 
-  const userId = req.session.currentUser._id;
+  //const userId = req.session.currentUser._id;
 
   Activity.findByIdAndUpdate(
     id,
-    { $addToSet: { attendees: [userId] } },
+    { $addToSet: { attendees: [req.body.accessToken] } },
     { new: true }
   )
     .then((updatedEvent) => {
@@ -143,20 +145,21 @@ router.post("/:id", (req, res) => {
     });
 });
 
-// FILTERED PAGES //////////////////////////////////
+//FILTERED PAGES //////////////////////////////////
 
-// router.get("/filter/:type", (req, res) => {
-//     const { type } = req.params;
-  
-//     Event.find({ type: type })
-//       .then((eventsFromDB) => {
-//         res.render("events/events-filtered-list", {
-//           events: eventsFromDB,
-//           type: type,
-//         });
-//       })
-//       .catch((error) => console.log("Error retrieving filtered events: ", error));
-//   });
-
+router.post('/search', (req, res) => {
+    
+    const {destinations,startDate,endDate,type} = req.body;
+    Activity.find({ destinations:destinations})
+    // startDate:startDate,endDate:endDate,type: type 
+      .then((activitiesFromDB) => {
+        res.status(200).send(activitiesFromDB);
+      }) .catch((error) => {
+        console.log("Error while searching activities: ", error);
+        res.status(400).json({
+          errorMessage: error,
+        });
+        });
+      })
 
 module.exports = router;
