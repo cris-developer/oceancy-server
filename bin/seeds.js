@@ -118,7 +118,7 @@ require('../config/db.config.js');
 Destination.create(destinations)
   .then(destinationsFromDB => {
     console.log(`Created ${destinationsFromDB.length} destinations`);
-    //mongoose.connection.close();
+    //smongoose.connection.close();
   })
   .catch(err => console.log(`An error occurred while creating destinations: ${err}`));
 
