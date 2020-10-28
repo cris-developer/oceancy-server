@@ -68,7 +68,7 @@ router.post("/create", (req, res, next) => {
 });
 
 //  DELETE ACTIVITY (tour) //////////////////////////////
-router.delete("/:id", (req, res, next) => {
+router.delete("/delete/:id", (req, res, next) => {
   console.log ('Deleting activities')
   const { id } = req.params;
   Activity.findByIdAndDelete({ _id: id })
@@ -112,47 +112,49 @@ router.post("/update/:id", (req, res, next) => {
 // ATTEND AND ACTIVITY
 
 
-router.post("/:id", (req, res) => {
-  const { id } = req.params;
+// router.post("/:id", (req, res) => {
+//   const { id } = req.params;
 
-  //const userId = req.session.currentUser._id;
+//   //const userId = req.session.currentUser._id;
 
-  Activity.findByIdAndUpdate(
-    id,
-    { $addToSet: { attendees: [req.body.accessToken] } },
-    { new: true }
-  )
-    .then((updatedEvent) => {
+//   Activity.findByIdAndUpdate(
+//     id,
+//     { $addToSet: { attendees: [req.body.accessToken] } },
+//     { new: true }
+//   )
+//     .then((updatedEvent) => {
 
-      res.status(200).send();
-      // User.findByIdAndUpdate(
-      //   userId,
-      //   { $addToSet: { activitiesAttending: updatedEvent._id } },
-      //   { new: true }
-      // ).then((updatedUser) => {
-      //   req.session.currentUser = updatedUser;
-      //   res.redirect(`/events/${id}`);
-      //   //console.log("Updated activity: ", updatedActivity);
-      //   //console.log("Updated activity: ", updatedUser);
-      // });
-    })
+//       res.status(200).send();
+//       // User.findByIdAndUpdate(
+//       //   userId,
+//       //   { $addToSet: { activitiesAttending: updatedEvent._id } },
+//       //   { new: true }
+//       // ).then((updatedUser) => {
+//       //   req.session.currentUser = updatedUser;
+//       //   res.redirect(`/events/${id}`);
+//       //   //console.log("Updated activity: ", updatedActivity);
+//       //   //console.log("Updated activity: ", updatedUser);
+//       // });
+//     })
 
-    .catch((error) => {
-      console.log("Error while updating activity: ", error);
-      res.status(400).json({
-        errorMessage: error,
-      });
-    });
-});
+//     .catch((error) => {
+//       console.log("Error while updating activity: ", error);
+//       res.status(400).json({
+//         errorMessage: error,
+//       });
+//     });
+// });
 
-//FILTERED PAGES //////////////////////////////////
+//SEARCH PAGES //////////////////////////////////
 
 router.post('/search', (req, res) => {
     
     const {destinations,startDate,endDate,type} = req.body;
-    Activity.find({ destinations:destinations})
+    console.log('destinations:', destinations);
+    Activity.find({ destination:destinations,type:type})
     // startDate:startDate,endDate:endDate,type: type 
       .then((activitiesFromDB) => {
+        console.log ('activitiesFromDB:',activitiesFromDB)
         res.status(200).send(activitiesFromDB);
       }) .catch((error) => {
         console.log("Error while searching activities: ", error);
