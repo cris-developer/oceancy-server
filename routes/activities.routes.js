@@ -148,10 +148,11 @@ router.post("/update/:id", (req, res, next) => {
 //SEARCH PAGES //////////////////////////////////
 
 router.post('/search', (req, res) => {
-    
+    console.log ('I AM THE SEARCHING ON THE CLIENT SIDE', 'req.body:', req.body)
     const {destinations,startDate,endDate,type} = req.body;
     console.log('destinations:', destinations);
-    Activity.find({ destination:destinations,type:type})
+    
+    Activity.find({ destination:destinations,type:type,startDate: startDate,endDate:endDate})
     // startDate:startDate,endDate:endDate,type: type 
       .then((activitiesFromDB) => {
         console.log ('activitiesFromDB:',activitiesFromDB)
