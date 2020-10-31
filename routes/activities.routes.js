@@ -3,6 +3,15 @@ const express = require("express");
 const router = express.Router();
 const Activity = require("../models/Activity.model");
 
+// require fileUploader
+const fileUploader = require("../config/db.cloudinary.js");
+
+
+//require date-fns
+const { format, compareAsc } = require("date-fns");
+
+
+
 //DISPLAY  LIST OF ACTIVITIES (tours) ///////////////////////
 
 router.get("/", (req, res, next) => {
@@ -38,6 +47,27 @@ router.get("/:id", (req, res, next) => {
 });
 
 
+// UPLOAD IMAGE WHEN CREATING ACTIVITY
+
+// ¿ha de ser esa ruta o activity?
+router.post("/upload", fileUploader.single("image"), (req, res) => {
+    console.log('file is: ', req.file.secure_url)
+    
+    if (!req.file) {
+      next(new Error('No file uploaded!'));
+      return;
+    }
+    res.json({securle_url: req.file.secure_url});
+    
+
+     // get secure_url from the file object and save it in the 
+    // variable 'secure_url', but this can be any name, just make sure you remember to use the same in frontend
+    //res.json({ secure_url: req.file.secure_url });
+    //res.json({securle_url: req.file.secure_url}); // o res.json (req.file.path)
+});
+
+ // console.log('file is: ', req.file)
+
 //  CREATE A NEW ACTIVITY (tour) //////////////////////////////
 
 router.post("/create", (req, res, next) => {
@@ -45,10 +75,20 @@ router.post("/create", (req, res, next) => {
     //return res.json(true)
   const { name, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
   console.log ('req.body:',req.body);
- Activity.create({ 
+
+  // let photoUrl;
+  // if (req.file) {
+  //   photoUrl = req.file.path;
+  // } else {
+  //   photoUrl = req.body.existingImage;
+  // }   // console.log('file is: ', req.file)
+ 
+      console.log ('photoUrl:', photoUrl)
+    
+  Activity.create({ 
       name, 
-      //startDate,
-     // endDate,
+      startDate,
+       endDate,
       duration,
       destination,
       price,

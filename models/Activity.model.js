@@ -31,11 +31,11 @@ const activitySchema = new Schema(
     },
     price:  {
         type: String,
-        required: true
+        //required: true
     },
     type : {
         type: String,
-        required: true
+        //required: true
         
     },
     address : {

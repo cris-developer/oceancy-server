@@ -14,8 +14,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    //origin: process.env.ORIGIN,
-    origin: "http://localhost:3000",
+    origin: process.env.ORIGIN || "http://localhost:3000",
   })
 );
 
@@ -27,6 +26,7 @@ app.use(cookieParser());
 app.use("/user", require("./routes/user.routes"));
 app.use("/destinations",require("./routes/destinations.routes"));
 app.use("/activities",require("./routes/activities.routes"));
+//app.use('/api', require('./routes/file-upload-routes'));
 app.use('/', require('./routes/index.routes'));
 
 

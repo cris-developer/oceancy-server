@@ -138,3 +138,31 @@ router.get("/session/:accessToken", (req, res) => {
 });
 
 module.exports = router;
+
+
+// GET USER PROFILE/////
+
+router.get("/profile", (req, res, next) => {
+  console.log ('Displaying ONE profile')
+  // const accessToken = session._id;
+  // const user = user._id
+  const {id} = req.params;
+
+  User.findById(id)
+   .then((userFromDB) => {
+    res.status(200).send(userFromDB);
+   })
+   .catch((error) => {
+     res.status(500).json({
+       errorMessage: error,
+     });
+   });
+});
+
+// EDIT USER PROFILE //
+
+
+// DELETE PROFILE //
+
+// GET ALL USERS //
+
