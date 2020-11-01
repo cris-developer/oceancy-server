@@ -62,7 +62,7 @@ router.post("/upload", fileUploader.single("image"), (req, res) => {
 
 //  CREATE A NEW ACTIVITY (tour) //////////////////////////////
 
-router.post("/create", (req, res, next) => {
+ router.post("/create", (req, res, next) => {
     console.log ('Creating activities')
     //return res.json(true)
   const { name, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
@@ -202,7 +202,6 @@ router.post('/search', (req, res) => {
     if (endDate !== '') {
       findParams.endDate = endDate;
     }
-    
     
     
     Activity.find(findParams)
