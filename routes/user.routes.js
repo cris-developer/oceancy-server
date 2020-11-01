@@ -7,6 +7,8 @@ const saltRounds = 10;
 const User = require("../models/User.model");
 const Session = require("../models/Session.model");
 const mongoose = require("mongoose");
+// require fileUploader
+const fileUploader = require("../config/db.cloudinary.js");
 
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////// SIGNUP //////////////////////////////////
@@ -166,3 +168,19 @@ router.get("/profile", (req, res, next) => {
 
 // GET ALL USERS //
 
+// UPLOADING IMAGE WHEN CREATING OR EDITING A PROFILE
+
+router.post("/profile/upload", fileUploader.single("photoUrl"), (req, res) => {  
+  console.log('file is: ', req.file.secure_url)
+  
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+    return;
+  }
+  res.json({securle_url: req.file.secure_url});
+  
+  // get secure_url from the file object and save it in the 
+  // variable 'secure_url', but this can be any name, just make sure you remember to use the same in frontend
+  // res.json({ secure_url: req.file.secure_url });
+  // res.json({securle_url: req.file.secure_url}); // o res.json (req.file.path)
+  });

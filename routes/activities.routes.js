@@ -49,24 +49,16 @@ router.get("/:id", (req, res, next) => {
 
 // UPLOAD IMAGE WHEN CREATING ACTIVITY
 
-// ¿ha de ser esa ruta o activity?
 router.post("/upload", fileUploader.single("image"), (req, res) => {
-    console.log('file is: ', req.file.secure_url)
-    
+    console.log('file is: ', req.file.path)
+    console.log ('where is the file?:',req.file)
     if (!req.file) {
       next(new Error('No file uploaded!'));
       return;
     }
-    res.json({securle_url: req.file.secure_url});
-    
+    res.json({path : req.file.path});
+  });
 
-     // get secure_url from the file object and save it in the 
-    // variable 'secure_url', but this can be any name, just make sure you remember to use the same in frontend
-    //res.json({ secure_url: req.file.secure_url });
-    //res.json({securle_url: req.file.secure_url}); // o res.json (req.file.path)
-});
-
- // console.log('file is: ', req.file)
 
 //  CREATE A NEW ACTIVITY (tour) //////////////////////////////
 
@@ -83,8 +75,7 @@ router.post("/create", (req, res, next) => {
   //   photoUrl = req.body.existingImage;
   // }   // console.log('file is: ', req.file)
  
-      console.log ('photoUrl:', photoUrl)
-    
+  
   Activity.create({ 
       name, 
       startDate,
@@ -189,11 +180,32 @@ router.post("/update/:id", (req, res, next) => {
 
 router.post('/search', (req, res) => {
     console.log ('I AM THE SEARCHING ON THE CLIENT SIDE', 'req.body:', req.body)
-    const {destinations,startDate,endDate,type} = req.body;
-    console.log('destinations:', destinations);
+    const {destination,startDate,endDate,type} = req.body;
+    console.log('destination:', destination);
+
+    /*Adding conditional statements in order one, two or 3 parameters had passed, retrieved always a result
+      If ony destination is passed        Activity.find({ destination : destination })
+      If destination and type is passed   Activity.find({ destination : destination, type : type })
+    */
+
+    const findParams = {};
+
+    if (destination !== '') {
+      findParams.destination = destination;
+    }
+    if (type !== '') {
+      findParams.type = type;
+    }
+    if (startDate !== '') {
+      findParams.startDate = startDate;
+    }
+    if (endDate !== '') {
+      findParams.endDate = endDate;
+    }
     
-    Activity.find({ destination:destinations,type:type,startDate: startDate,endDate:endDate})
-    // startDate:startDate,endDate:endDate,type: type 
+    
+    
+    Activity.find(findParams)
       .then((activitiesFromDB) => {
         console.log ('activitiesFromDB:',activitiesFromDB)
         res.status(200).send(activitiesFromDB);
