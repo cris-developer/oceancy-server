@@ -4,10 +4,10 @@ const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema(
   {
-    username: {
+    fullName: {
       type: String,
       trim: true,
-      required: [true, 'Username is required.'],
+      required: [true, 'Full name is required.'],
       unique: true
     },
     // name: {
@@ -37,12 +37,10 @@ const userSchema = new Schema(
     },
 
     favoriteActivity :{
-
       type: Schema.Types.ObjectId, ref: 'Activity' 
-
     },
       
-      photoUrl: {
+    photoUrl: {
         type: String,
     },
 

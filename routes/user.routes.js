@@ -17,12 +17,13 @@ const fileUploader = require("../config/db.cloudinary.js");
 
 // .post() route ==> to process form data
 router.post("/signup", (req, res, next) => {
-  const { username, email, password } = req.body;
-
-  if (!username || !email || !password) {
+  //const {!fullName || !email || !password || favorite Activity || experience)}
+  const { fullName, email, password } = req.body;
+  // !fullName || !email || !password || favorite Activity || experience)
+  if (!fullName || !email || !password) {
     res.status(200).json({
       errorMessage:
-        "All fields are mandatory. Please provide your username, email and password.",
+        "All fields are mandatory. Please provide your full name, email and password.",
     });
     return;
   }
@@ -43,8 +44,8 @@ router.post("/signup", (req, res, next) => {
     .then((salt) => bcryptjs.hash(password, salt))
     .then((hashedPassword) => {
       return User.create({
-        // username: username
-        username,
+        // fullName: fullName
+        fullName,
         email,
         // password => this is the key from the User model
         //     ^
@@ -66,7 +67,7 @@ router.post("/signup", (req, res, next) => {
       } else if (error.code === 11000) {
         res.status(200).json({
           errorMessage:
-            "Username and email need to be unique. Either username or email is already used.",
+            "Username and email need to be unique. Either full name or email is already used.",
         });
       } else {
         res.status(500).json({ errorMessage: error });
@@ -145,22 +146,28 @@ module.exports = router;
 
 // GET USER PROFILE/////
 
-router.get("/profile", (req, res, next) => {
-  console.log ('Displaying ONE profile')
-  // const accessToken = session._id;
-  // const user = user._id
-  const {id} = req.params;
+// router.get("/profile/:id", (req, res, next) => {
+//   console.log ('Displaying ONE profile')
+//   // const accessToken = session._id;
+//   // const user = user._id
+//   const {id} = req.params;
 
-  User.findById(id)
-   .then((userFromDB) => {
-    res.status(200).send(userFromDB);
-   })
-   .catch((error) => {
-     res.status(500).json({
-       errorMessage: error,
-     });
-   });
-});
+//   Session
+//   .findById({ _id: session._id })
+//   .then((session) => {
+//         User.findById(userId)
+//         .then((userFromDB) => {
+//         res.status(200).send(userFromDB);
+//         })
+//         .catch((error) => {
+//           res.status(500).json({
+//             errorMessage: error,
+//           });
+//         });
+//     })
+//   })
+
+
 
 // EDIT USER PROFILE //
 
