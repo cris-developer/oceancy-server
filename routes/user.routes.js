@@ -141,10 +141,57 @@ router.get("/session/:accessToken", (req, res) => {
   .catch(err => res.status(500).json({errorMessage: err}))
 });
 
-module.exports = router;
-
 
 // GET USER PROFILE/////
+
+router.post("/profile", (req, res, next) => {
+  const { fullName, email,password,favoriteActivity, userId } = req.body;
+  console.log(`I AM GETTING THE USER PROFILE FROM SERVER SIDE`, userId);
+  User.findById(userId)
+    .then((user) => {
+      console.log(user);
+      res.status(200).json(user);
+    })
+    .catch((error) => res.status(500).json({ errorMessage: error }));
+});
+
+
+
+// router.post("/profile", (req, res,next) => {
+//   const { userId,fullName, email,password,favoriteActivity } = req.body;
+//   console.log(`I AM THE USER ID`, userId);
+//   User.findById(userId)
+//     .then((user) => {
+//       console.log (user)
+//       res.status(200).json(user); 
+//     })
+//     .catch((err) => res.status(500).json({ errorMessage: err }));
+// });
+
+
+
+
+// router.post("/profile", (req, res) => {
+//   const {accessToken} = req.body;
+
+//   Session
+//   .findById({ _id: accessToken})
+//   .then((session) => {
+//         User.findById(session.userId)
+//         .then((userFromDB) => {
+//         res.status(200).json(userFromDB);
+//         })
+//         .catch((error) => {
+//           res.status(500).json({
+//             errorMessage: error,
+//           });
+//         }).catch((error) => {
+//           res.status(500).json({
+//             errorMessage: error,
+//     });
+//      })
+//   } 
+// });
 
 // router.get("/profile/:id", (req, res, next) => {
 //   console.log ('Displaying ONE profile')
@@ -152,20 +199,20 @@ module.exports = router;
 //   // const user = user._id
 //   const {id} = req.params;
 
-//   Session
-//   .findById({ _id: session._id })
-//   .then((session) => {
-//         User.findById(userId)
-//         .then((userFromDB) => {
-//         res.status(200).send(userFromDB);
-//         })
-//         .catch((error) => {
-//           res.status(500).json({
-//             errorMessage: error,
-//           });
-//         });
-//     })
-//   })
+  // Session
+  // .findById({ _id: session._id })
+  // .then((session) => {
+  //       User.findById(userId)
+  //       .then((userFromDB) => {
+  //       res.status(200).json(userFromDB);
+  //       })
+  //       .catch((error) => {
+  //         res.status(500).json({
+  //           errorMessage: error,
+  //         });
+  //       });
+  //   })
+  // })
 
 
 
@@ -178,12 +225,14 @@ module.exports = router;
 
 // UPLOADING IMAGE WHEN CREATING OR EDITING A PROFILE
 
-  router.post("/upload", fileUploader.single("image"), (req, res) => {
-    console.log('file is: ', req.file.path)
-    console.log ('where is the file?:',req.file)
-    if (!req.file) {
-      next(new Error('No file uploaded!'));
-      return;
-    }
-    res.json({path : req.file.path});
-  });
+  // router.post("/upload", fileUploader.single("image"), (req, res) => {
+  //   console.log('file is: ', req.file.path)
+  //   console.log ('where is the file?:',req.file)
+  //   if (!req.file) {
+  //     next(new Error('No file uploaded!'));
+  //     return;
+  //   }
+  //   res.json({path : req.file.path});
+  // });
+
+  module.exports = router;
