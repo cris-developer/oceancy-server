@@ -110,6 +110,8 @@ router.delete("/delete/:id", (req, res, next) => {
       });
     });
 });
+
+
 // UPDATE AND EDIT ACTIVITY (tour)
 router.post("/update/:id", (req, res, next) => {
    console.log ('I AM UPDATING DATA FROM SERVER')

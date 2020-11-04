@@ -144,95 +144,87 @@ router.get("/session/:accessToken", (req, res) => {
 
 // GET USER PROFILE/////
 
-router.post("/profile", (req, res, next) => {
-  const { fullName, email,password,favoriteActivity, userId } = req.body;
-  console.log(`I AM GETTING THE USER PROFILE FROM SERVER SIDE`, userId);
-  User.findById(userId)
-    .then((user) => {
-      console.log(user);
-      res.status(200).json(user);
+
+router.get("/profile/:accessToken", (req, res, next) => {
+  console.log ('Displaying ONE profile')
+  //const accessToken = session._id;
+  // const user = user._id
+  const {accessToken} = req.params;
+
+  Session
+  .findById({ _id: accessToken })
+  .then((session) => {
+        User.findById(session.userId) //getting the user from the session
+        .then((userFromDB) => {
+        res.status(200).json(userFromDB);
+        })
+        .catch((error) => {
+          res.status(500).json({
+            errorMessage: error,
+          });
+        });
     })
-    .catch((error) => res.status(500).json({ errorMessage: error }));
-});
-
-
-
-// router.post("/profile", (req, res,next) => {
-//   const { userId,fullName, email,password,favoriteActivity } = req.body;
-//   console.log(`I AM THE USER ID`, userId);
-//   User.findById(userId)
-//     .then((user) => {
-//       console.log (user)
-//       res.status(200).json(user); 
-//     })
-//     .catch((err) => res.status(500).json({ errorMessage: err }));
-// });
-
-
-
-
-// router.post("/profile", (req, res) => {
-//   const {accessToken} = req.body;
-
-//   Session
-//   .findById({ _id: accessToken})
-//   .then((session) => {
-//         User.findById(session.userId)
-//         .then((userFromDB) => {
-//         res.status(200).json(userFromDB);
-//         })
-//         .catch((error) => {
-//           res.status(500).json({
-//             errorMessage: error,
-//           });
-//         }).catch((error) => {
-//           res.status(500).json({
-//             errorMessage: error,
-//     });
-//      })
-//   } 
-// });
-
-// router.get("/profile/:id", (req, res, next) => {
-//   console.log ('Displaying ONE profile')
-//   // const accessToken = session._id;
-//   // const user = user._id
-//   const {id} = req.params;
-
-  // Session
-  // .findById({ _id: session._id })
-  // .then((session) => {
-  //       User.findById(userId)
-  //       .then((userFromDB) => {
-  //       res.status(200).json(userFromDB);
-  //       })
-  //       .catch((error) => {
-  //         res.status(500).json({
-  //           errorMessage: error,
-  //         });
-  //       });
-  //   })
-  // })
+  })
 
 
 
 // EDIT USER PROFILE //
 
 
+router.post("/update/:id", (req, res, next) => {
+  console.log ('I AM UPDATING PROFILE FROM SERVER')
+   const {id } = req.params;
+   const { fullName, email,password,favoriteActivity,photoUrl } = req.body;
+   console.log ('req.params:' ,req.params)
+   console.log ('req.body:',req.body)
+   Activity.findByIdAndUpdate({
+        _id: id }, 
+        { fullName: fullName, 
+          email : email,
+          password: password, 
+          favoriteActivity:favoriteActivity, 
+          photoUrl: photoUrl },
+          { new: true })
+     .then((userFromDB) => {
+       res.status(200).send(userFromDB);
+     })
+     .catch((error) => {
+       res.status(400).json({
+         errorMessage: error,
+       });
+     });
+ })
+
+ //UPLOADING IMAGE WHEN CREATING OR EDITING A PROFILE
+
+ router.post("/upload", fileUploader.single("image"), (req, res) => {
+  console.log('file is: ', req.file.path)
+  console.log ('where is the file?:',req.file)
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+    return;
+  }
+  res.json({path : req.file.path});
+});
+
+ 
 // DELETE PROFILE //
+
+router.delete("/delete/:id/profile", (req, res, next) => {
+  console.log ('Deleting my profile')
+  const { id } = req.params;
+  User.findByIdAndDelete({ _id: id })
+    .then(() => res.status(200).send())
+    .catch((error) => {
+      res.status(500).json({
+        errorMessage: error,
+      });
+    });
+});
 
 // GET ALL USERS //
 
-// UPLOADING IMAGE WHEN CREATING OR EDITING A PROFILE
 
-  // router.post("/upload", fileUploader.single("image"), (req, res) => {
-  //   console.log('file is: ', req.file.path)
-  //   console.log ('where is the file?:',req.file)
-  //   if (!req.file) {
-  //     next(new Error('No file uploaded!'));
-  //     return;
-  //   }
-  //   res.json({path : req.file.path});
-  // });
+
 
   module.exports = router;
