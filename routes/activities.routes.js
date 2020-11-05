@@ -99,6 +99,7 @@ router.post("/upload", fileUploader.single("image"), (req, res) => {
 });
 
 //  DELETE ACTIVITY (tour) //////////////////////////////
+
 router.delete("/delete/:id", (req, res, next) => {
   console.log ('Deleting activities')
   const { id } = req.params;
@@ -108,7 +109,7 @@ router.delete("/delete/:id", (req, res, next) => {
       res.status(500).json({
         errorMessage: error,
       });
-    });
+    })
 });
 
 
