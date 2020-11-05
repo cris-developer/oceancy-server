@@ -39,7 +39,7 @@ const userSchema = new Schema(
     favoriteActivity :{
       type: Schema.Types.ObjectId, ref: 'Activity' 
     },
-      
+    
     photoUrl: {
         type: String,
     },

@@ -170,30 +170,61 @@ router.get("/profile/:accessToken", (req, res, next) => {
 
 // EDIT USER PROFILE //
 
+// FIRST OPTION
+// router.post("/profile/edit/:accessToken", (req, res, next) => {
 
-router.post("/update/:id", (req, res, next) => {
-  console.log ('I AM UPDATING PROFILE FROM SERVER')
-   const {id } = req.params;
-   const { fullName, email,password,favoriteActivity,photoUrl } = req.body;
-   console.log ('req.params:' ,req.params)
-   console.log ('req.body:',req.body)
-   Activity.findByIdAndUpdate({
-        _id: id }, 
-        { fullName: fullName, 
-          email : email,
-          password: password, 
-          favoriteActivity:favoriteActivity, 
-          photoUrl: photoUrl },
-          { new: true })
-     .then((userFromDB) => {
-       res.status(200).send(userFromDB);
-     })
-     .catch((error) => {
-       res.status(400).json({
-         errorMessage: error,
-       });
-     });
- })
+//   console.log ('I AM UPDATING MY PROFILE FROM SERVER SIDE')
+   
+//   const { fullName, email,password,favoriteActivity,photoUrl } = req.body;
+   
+//    console.log ('req.body:',req.body)
+
+//    User.findByIdAndUpdate({
+//         _id: accessToken }, 
+//         { fullName: fullName, 
+//           email : email,
+//           password: password, 
+//           favoriteActivity:favoriteActivity, 
+//           photoUrl: photoUrl },
+//           { new: true })
+//      .then((userFromDB) => {
+//        res.status(200).send(userFromDB);
+//      })
+//      .catch((error) => {
+//        res.status(400).json({
+//          errorMessage: error,
+//        });
+//      });
+//  })
+
+//SECOND OPTION
+// router.post("/profile/edit/:accessToken", (req, res, next) => {
+
+//   console.log ('I AM UPDATING MY PROFILE FROM SERVER SIDE')
+   
+//   const { fullName, email,password,favoriteActivity,photoUrl } = req.body;
+   
+//    console.log ('req.body:',req.body)
+
+//    User.findByIdAndUpdate({
+//         _id: accessToken }, 
+//         { fullName: fullName, 
+//           email : email,
+//           password: password, 
+//           favoriteActivity:favoriteActivity, 
+//           photoUrl: photoUrl },
+//           { new: true })
+//      .then((userFromDB) => {
+//        res.status(200).send(userFromDB);
+//      })
+//      .catch((error) => {
+//        res.status(400).json({
+//          errorMessage: error,
+//        });
+//      });
+//  })
+
+
 
  //UPLOADING IMAGE WHEN CREATING OR EDITING A PROFILE
 
