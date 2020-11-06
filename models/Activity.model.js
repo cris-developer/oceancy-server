@@ -50,8 +50,8 @@ const activitySchema = new Schema(
         type: String,
         enum: ['Point']
       },
-      
     },
+
     photoUrl: {
         type: String,
     },

@@ -170,63 +170,54 @@ router.get("/profile/:accessToken", (req, res, next) => {
 
 // EDIT USER PROFILE //
 
-// FIRST OPTION
-// router.post("/profile/edit/:accessToken", (req, res, next) => {
+router.post("/profile/edit/:id", (req, res, next) => {
 
-//   console.log ('I AM UPDATING MY PROFILE FROM SERVER SIDE')
-   
-//   const { fullName, email,password,favoriteActivity,photoUrl } = req.body;
-   
-//    console.log ('req.body:',req.body)
+    console.log ('I AM UPDATING MY PROFILE FROM SERVER SIDE')
+  const { fullName, email,password,favoriteActivity,level,photoUrl } = req.body;
+    console.log ('req.body:',req.body)
+  const {id} = req.params;
+    console.log ('id:',id)
+  
+  Session
+    .findById({ _id: id })
+    .then((session) => {
+      console.log ('IAM THE SESSION ON THE UPDATE ID:',session)
 
-//    User.findByIdAndUpdate({
-//         _id: accessToken }, 
-//         { fullName: fullName, 
-//           email : email,
-//           password: password, 
-//           favoriteActivity:favoriteActivity, 
-//           photoUrl: photoUrl },
-//           { new: true })
-//      .then((userFromDB) => {
-//        res.status(200).send(userFromDB);
-//      })
-//      .catch((error) => {
-//        res.status(400).json({
-//          errorMessage: error,
-//        });
-//      });
-//  })
-
-//SECOND OPTION
-// router.post("/profile/edit/:accessToken", (req, res, next) => {
-
-//   console.log ('I AM UPDATING MY PROFILE FROM SERVER SIDE')
-   
-//   const { fullName, email,password,favoriteActivity,photoUrl } = req.body;
-   
-//    console.log ('req.body:',req.body)
-
-//    User.findByIdAndUpdate({
-//         _id: accessToken }, 
-//         { fullName: fullName, 
-//           email : email,
-//           password: password, 
-//           favoriteActivity:favoriteActivity, 
-//           photoUrl: photoUrl },
-//           { new: true })
-//      .then((userFromDB) => {
-//        res.status(200).send(userFromDB);
-//      })
-//      .catch((error) => {
-//        res.status(400).json({
-//          errorMessage: error,
-//        });
-//      });
-//  })
+      User
+        .findByIdAndUpdate(
+          {
+            _id: session.userId }, 
+          {
+            fullName: fullName, 
+            email : email,
+            password: password, 
+            favoriteActivity:favoriteActivity, 
+            level: level,
+            photoUrl: photoUrl
+          },
+          { new: true }
+        )
+        .then((userFromDB) => {
+          console.log ('userFromDB:',userFromDB)
+          res.status(200).json(userFromDB);
+        })
+        .catch((error) => {
+          res.status(500).json({
+            errorMessage: error,
+          });
+        });
+        
+    }) 
+    
+    .catch((error) => {
+      res.status(500).json({
+        errorMessage: error,
+      });
+    });
+});
 
 
-
- //UPLOADING IMAGE WHEN CREATING OR EDITING A PROFILE
+ //UPLOADING IMAGE WHEN  EDITING A PROFILE
 
  router.post("/upload", fileUploader.single("image"), (req, res) => {
   console.log('file is: ', req.file.path)
@@ -252,10 +243,6 @@ router.delete("/delete/:id/profile", (req, res, next) => {
       });
     });
 });
-
-// GET ALL USERS //
-
-
 
 
   module.exports = router;
