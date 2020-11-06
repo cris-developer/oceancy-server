@@ -37,7 +37,8 @@ const userSchema = new Schema(
     },
 
     favoriteActivity :{
-      type: Schema.Types.ObjectId, ref: 'Activity' 
+      type : String,
+      // type: Schema.Types.ObjectId, ref: 'Activity' 
     },
     
     level : {
