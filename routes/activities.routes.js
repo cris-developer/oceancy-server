@@ -199,12 +199,12 @@ router.post('/search', (req, res) => {
     if (type !== '') {
       findParams.type = type;
     }
-    if (startDate !== '') {
-      findParams.startDate = startDate;
-    }
-    if (endDate !== '') {
-      findParams.endDate = endDate;
-    }
+    // if (startDate !== '') {
+    //   findParams.startDate = startDate;
+    // }
+    // if (endDate !== '') {
+    //   findParams.endDate = endDate;
+    // }
     
     
     Activity.find(findParams)
