@@ -65,7 +65,7 @@ router.post("/upload", fileUploader.single("image"), (req, res) => {
  router.post("/create", (req, res, next) => {
     console.log ('Creating activities')
     //return res.json(true)
-  const { name, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
+  const { name,description, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
   console.log ('req.body:',req.body);
 
   // let photoUrl;
@@ -78,12 +78,13 @@ router.post("/upload", fileUploader.single("image"), (req, res) => {
   
   Activity.create({ 
       name, 
-      startDate,
-       endDate,
-      duration,
-      destination,
-      price,
       type,
+      destination,
+      description,
+      startDate,
+      endDate,
+      duration,
+      price,
       address,
       photoUrl })
 
@@ -117,18 +118,19 @@ router.delete("/delete/:id", (req, res, next) => {
 router.post("/update/:id", (req, res, next) => {
    console.log ('I AM UPDATING DATA FROM SERVER')
     const {id } = req.params;
-    const { name, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
+    const { name,type,destination, description, startDate,endDate,duration,price, address,photoUrl } = req.body;
     console.log ('req.params:' ,req.params)
     console.log ('req.body:',req.body)
     Activity.findByIdAndUpdate({
          _id: id }, 
          { name: name, 
+           type :type, 
+           destination:destination, 
+           description: description,
            startDate : startDate,
            endDate: endDate, 
            duration:duration, 
-           destination :destination, 
            price:price, 
-           type :type, 
            address: address, 
            photoUrl: photoUrl },
            { new: true })

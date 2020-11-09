@@ -81,34 +81,43 @@ router.post("/signup", (req, res, next) => {
 
 // .post() login route ==> to process form data
 router.post("/login", (req, res, next) => {
+  console.log("soy el logi n de user routes") 
   const { email, password } = req.body;
-
+  console.log ('req.body:',req.body)
   if (email === "" || password === "") {
     res.status(500).json({
       errorMessage: "Please enter both, email and password to login.",
     });
     return;
   }
-
+  console.log("password" + password)
+  
   User.findOne({ email })
     .then((user) => {
+      console.log(user.password)
+      console.log ('My user id is:',user.id)
       if (!user) {
         res.status(200).json({
           errorMessage: "Email is not registered. Try with other email.",
         });
         return;
       } else if (bcryptjs.compareSync(password, user.password)) {
+        console.log("soy el else if de User.findOne /login")
         Session.create({
           userId: user._id,
           createdAt: Date.now(),
         }).then((session) => {
-          res.status(200).json({ accessToken: session._id, user });
+          console.log("access token", accessToken)
+          res.status(200).json(
+            
+            { accessToken: session._id, user });
         });
       } else {
+        // res.status(401) => es Incorrect password OJO
         res.status(200).json({ errorMessage: "Incorrect password." });
       }
     })
-    .catch((error) => res.status(500).json({ errorMessage: err }));
+    .catch((err) => res.status(500).json({ errorMessage: err }));
 });
 
 ////////////////////////////////////////////////////////////////////////
@@ -119,7 +128,7 @@ router.post("/logout", (req, res) => {
   Session.deleteOne({
     userId: req.body.accessToken,
   })
-    .then((session) => {
+    .then((session) => { 
       res.status(200).json({ success: "User was logged out" });
     })
     .catch((error) => res.status(500).json({ errorMessage: error }));
