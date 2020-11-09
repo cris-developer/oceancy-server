@@ -81,7 +81,7 @@ router.post("/signup", (req, res, next) => {
 
 // .post() login route ==> to process form data
 router.post("/login", (req, res, next) => {
-  console.log("soy el logi n de user routes") 
+  console.log(' i am the login of the routes') 
   const { email, password } = req.body;
   console.log ('req.body:',req.body)
   if (email === "" || password === "") {
@@ -107,7 +107,7 @@ router.post("/login", (req, res, next) => {
           userId: user._id,
           createdAt: Date.now(),
         }).then((session) => {
-          console.log("access token", accessToken)
+          //console.log("access token", accessToken)
           res.status(200).json(
             
             { accessToken: session._id, user });
