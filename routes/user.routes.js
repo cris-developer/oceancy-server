@@ -160,6 +160,7 @@ router.get("/profile/:accessToken", (req, res, next) => {
   // const user = user._id
   const {accessToken} = req.params;
 
+
   Session
   .findById({ _id: accessToken })
   .then((session) => {
@@ -176,7 +177,7 @@ router.get("/profile/:accessToken", (req, res, next) => {
   })
 
 
-
+  
 // EDIT USER PROFILE //
 
 router.post("/profile/edit/:id", (req, res, next) => {
@@ -192,15 +193,28 @@ router.post("/profile/edit/:id", (req, res, next) => {
     .then((session) => {
       console.log ('IAM THE SESSION ON THE UPDATE ID:',session)
 
-      User
+      const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+      if (!regex.test(password)) {
+        res.status(200).json({
+          errorMessage:
+            "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.",
+        });
+        return;
+      }
+    
+      bcryptjs
+        .genSalt(saltRounds)
+        .then((salt) => bcryptjs.hash(password, salt))
+        .then((hashedPassword) => {
+          User
         .findByIdAndUpdate(
           {
             _id: session.userId }, 
           {
             fullName: fullName, 
             email : email,
-            password: password, 
             favoriteActivity:favoriteActivity, 
+            password: hashedPassword,
             level: level,
             photoUrl: photoUrl
           },
@@ -215,7 +229,20 @@ router.post("/profile/edit/:id", (req, res, next) => {
             errorMessage: error,
           });
         });
-        
+        })
+        .catch((error) => {
+          if (error instanceof mongoose.Error.ValidationError) {
+            res.status(200).json({ errorMessage: error.message });
+          } else if (error.code === 11000) {
+            res.status(200).json({
+              errorMessage:
+                "Username and email need to be unique. Either full name or email is already used.",
+            });
+          } else {
+            res.status(500).json({ errorMessage: error });
+          }
+        }); // close .catch()
+
     }) 
     
     .catch((error) => {
@@ -223,7 +250,8 @@ router.post("/profile/edit/:id", (req, res, next) => {
         errorMessage: error,
       });
     });
-});
+  });
+
 
 
  //UPLOADING IMAGE WHEN  EDITING A PROFILE
