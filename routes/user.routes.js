@@ -102,7 +102,7 @@ router.post("/login", (req, res, next) => {
         });
         return;
       } else if (bcryptjs.compareSync(password, user.password)) {
-        console.log("soy el else if de User.findOne /login")
+        console.log("I am else if from Login / User.findOne ")
         Session.create({
           userId: user._id,
           createdAt: Date.now(),
@@ -160,7 +160,6 @@ router.get("/profile/:accessToken", (req, res, next) => {
   // const user = user._id
   const {accessToken} = req.params;
 
-
   Session
   .findById({ _id: accessToken })
   .then((session) => {
@@ -206,7 +205,7 @@ router.post("/profile/edit/:id", (req, res, next) => {
         .genSalt(saltRounds)
         .then((salt) => bcryptjs.hash(password, salt))
         .then((hashedPassword) => {
-          User
+        User
         .findByIdAndUpdate(
           {
             _id: session.userId }, 
@@ -241,7 +240,7 @@ router.post("/profile/edit/:id", (req, res, next) => {
           } else {
             res.status(500).json({ errorMessage: error });
           }
-        }); // close .catch()
+        }); 
 
     }) 
     
@@ -266,7 +265,7 @@ router.post("/profile/edit/:id", (req, res, next) => {
   res.json({path : req.file.path});
 });
 
- 
+
 // DELETE PROFILE //
 
 router.delete("/delete/:id/profile", (req, res, next) => {
@@ -280,6 +279,25 @@ router.delete("/delete/:id/profile", (req, res, next) => {
       });
     });
 });
+
+// DISPLAY ALL THE PROFILES
+
+router.get("/members", (req, res, next) => {
+  console.log ('Displaying ALL users')
+   User.find()
+    .then((userList) => {
+      res.status(200).json(userList);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({
+        errorMessage: error,
+      });
+    });
+});
+
+
+
 
 
   module.exports = router;
