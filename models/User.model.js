@@ -52,7 +52,18 @@ const userSchema = new Schema(
     isAdmin :{
       type :Boolean,
       default :false,
-    }
+    },
+
+    activitiesHosting: [
+      {
+        type: Schema.Types.ObjectId, ref: "Activity",
+      },
+    ],
+    activitiesAttending: [
+      {
+        type : Schema.Types.ObjectId, ref: "Activity",
+      },
+    ],
     
   },
   {

@@ -2,6 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const Activity = require("../models/Activity.model");
+const User = require("../models/User.model");
+const Session = require("../models/Session.model");
 
 // require fileUploader
 const fileUploader = require("../config/db.cloudinary.js");
@@ -12,7 +14,7 @@ const { format, compareAsc } = require("date-fns");
 
 
 
-//DISPLAY  LIST OF ACTIVITIES (tours) ///////////////////////
+//DISPLAY A  LIST OF ACTIVITIES (tours) ///////////////////////
 
 router.get("/", (req, res, next) => {
   console.log ('Displaying ALL activities')
@@ -35,8 +37,22 @@ router.get("/:id", (req, res, next) => {
 
   const {id} = req.params;
 
+  
+
   Activity.findById(id)
+  // .populate ('host')
+  //  .populate([
+  //   {
+  //     path: "host",
+  //     model: "User",
+  //   },
+    
+  // ])
+   .populate ('host')
+   .populate ('attendees')
    .then((activities) => {
+     console.log ('activities:', activities.attendees)
+    //console.log ('host:',activities.host)
     res.status(200).send(activities);
    })
    .catch((error) => {
@@ -65,7 +81,9 @@ router.post("/upload", fileUploader.single("image"), (req, res) => {
  router.post("/create", (req, res, next) => {
     console.log ('Creating activities')
     //return res.json(true)
-  const { name,description, startDate,endDate,duration,destination,price,type, address,photoUrl } = req.body;
+    //console.log ('Host:',host._id)
+    //const { name,description, startDate,endDate,duration,destination,price,type, address,photoUrl, host._id } = req.body;
+  const { name,description, startDate,endDate,duration,destination,price,type, address,photoUrl,host} = req.body;
   console.log ('req.body:',req.body);
 
   // let photoUrl;
@@ -75,29 +93,31 @@ router.post("/upload", fileUploader.single("image"), (req, res) => {
   //   photoUrl = req.body.existingImage;
   // }   // console.log('file is: ', req.file)
  
-  
-  Activity.create({ 
-      name, 
-      type,
-      destination,
-      description,
-      startDate,
-      endDate,
-      duration,
-      price,
-      address,
-      photoUrl })
-
-    .then((activity) => {
-      res.status(200).send(activity);
-    })
-    .catch((error) => {
-      console.log(error)
-      res.status(500).json({
-        errorMessage: error,
+      Activity.create({ 
+        name, 
+        type,
+        destination,
+        description,
+        startDate,
+        endDate,
+        duration,
+        price,
+        address,
+        photoUrl,
+        host
+      })
+      
+      .then((activity) => {
+        res.status(200).send(activity);
+      })
+      .catch((error) => {
+        console.log(error)
+        res.status(500).json({
+          errorMessage: error,
+        });
       });
-    });
-});
+      })
+  /*  })*/
 
 //  DELETE ACTIVITY (tour) //////////////////////////////
   
@@ -148,38 +168,41 @@ router.post("/update/:id", (req, res, next) => {
 // ATTEND AND ACTIVITY
 
 
-// router.post("/:id", (req, res) => {
-//   const { id } = req.params;
+router.post("/:id", (req, res) => {
+  const { id } = req.params;
 
-//   //const userId = req.session.currentUser._id;
+  console.log ('userId WHEN ATTENDING ACTIIVTY:', req.body.user)
 
-//   Activity.findByIdAndUpdate(
-//     id,
-//     { $addToSet: { attendees: [req.body.accessToken] } },
-//     { new: true }
-//   )
-//     .then((updatedEvent) => {
+  Activity.findByIdAndUpdate(
+    id,
+    { $addToSet: { attendees: [req.body.user] } },
+    { new: true }
+  )
+    .populate ('host')
+    .populate ('attendees')
+    .then((updatedActivity) => {
+      
+      //res.status(200).send();
 
-//       res.status(200).send();
-//       // User.findByIdAndUpdate(
-//       //   userId,
-//       //   { $addToSet: { activitiesAttending: updatedEvent._id } },
-//       //   { new: true }
-//       // ).then((updatedUser) => {
-//       //   req.session.currentUser = updatedUser;
-//       //   res.redirect(`/events/${id}`);
-//       //   //console.log("Updated activity: ", updatedActivity);
-//       //   //console.log("Updated activity: ", updatedUser);
-//       // });
-//     })
+      User.findByIdAndUpdate(
+        req.body.user._id,
+        { $addToSet: { activitiesAttending: updatedActivity} },
+        { new: true }
+      ).then((updatedUser) => {
+        console.log ('I AM THE UPDATED USER OF THE BACKEND:',updatedUser)
+        
+        res.status(200).send(updatedActivity)
+      });
+      
+    })
 
-//     .catch((error) => {
-//       console.log("Error while updating activity: ", error);
-//       res.status(400).json({
-//         errorMessage: error,
-//       });
-//     });
-// });
+    .catch((error) => {
+      console.log("Error while updating activity: ", error);
+      res.status(400).json({
+        errorMessage: error,
+      });
+    });
+});
 
 //SEARCH PAGES //////////////////////////////////
 
@@ -207,6 +230,8 @@ router.post('/search', (req, res) => {
     // if (endDate !== '') {
     //   findParams.endDate = endDate;
     // }
+
+    //if (startDate ==
     
     
     Activity.find(findParams)

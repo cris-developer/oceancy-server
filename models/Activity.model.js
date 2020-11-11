@@ -60,6 +60,9 @@ const activitySchema = new Schema(
       type: Schema.Types.ObjectId, ref: 'User' 
     },
     
+    attendees: [{ 
+      type: Schema.Types.ObjectId, ref: 'User' 
+    }], 
   },
   {
     timestamps: true
