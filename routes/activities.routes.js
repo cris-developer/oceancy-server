@@ -30,6 +30,53 @@ router.get("/", (req, res, next) => {
     });
 });
 
+//SEARCH PAGES //////////////////////////////////
+
+router.post('/search', (req, res) => {
+  console.log ('I AM THE SEARCHING ON THE CLIENT SIDE', 'req.body:', req.body)
+  const {destination,startDate,endDate,type} = req.body;
+  console.log('destination:', destination);
+  console.log ('startDate from searchActivity:',req.body.startDate)
+  console.log ('endDate from searchActivity:',req.body.endDate)
+
+  /*Adding conditional statements in order one, two or 3 parameters had passed, retrieved always a result
+    If ony destination is passed        Activity.find({ destination : destination })
+    If destination and type is passed   Activity.find({ destination : destination, type : type })
+  */
+
+  const findParams = {};
+  let formatStartDate = new Date(startDate)
+  let formatEndDate = new Date(endDate)
+  
+
+  if (destination !== '') {
+    findParams.destination = destination;
+  }
+  if (type !== '') {
+    findParams.type = type;
+  }
+  if (startDate !== '') {
+    findParams.startDate = {$lt:startDate} ;
+  }
+  if (endDate !== '') {
+    findParams.endDate = {$gt:endDate};
+  }
+
+
+
+  Activity.find(findParams)
+    .then((activitiesFromDB) => {
+      console.log ('activitiesFromDB:',activitiesFromDB)
+      res.status(200).send(activitiesFromDB);
+    }) .catch((error) => {
+      console.log("Error while searching activities: ", error);
+      res.status(400).json({
+        errorMessage: error,
+      });
+      });
+    })
+
+
 // DISPLAY AN ACTIVITY
 
 router.get("/:id", (req, res, next) => {
@@ -165,85 +212,45 @@ router.post("/update/:id", (req, res, next) => {
   })
 
 
-// ATTEND AND ACTIVITY
+//ATTEND AND ACTIVITY
 
 
-// router.post("/:id", (req, res) => {
-//   const { id } = req.params;
+router.post("/:id", (req, res) => {
+  const { id } = req.params;
 
-//   console.log ('userId WHEN ATTENDING ACTIIVTY:', req.body.user)
+  console.log ('userId WHEN ATTENDING ACTIIVTY:', req.body.user)
 
-//   Activity.findByIdAndUpdate(
-//     id,
-//     { $addToSet: { attendees: [req.body.user] } },
-//     { new: true }
-//   )
-//     .populate ('host')
-//     .populate ('attendees')
-//     .then((updatedActivity) => {
+  Activity.findByIdAndUpdate(
+    id,
+    { $addToSet: { attendees: [req.body.user] } },
+    { new: true }
+  )
+    .populate ('host')
+    .populate ('attendees')
+    .then((updatedActivity) => {
       
-//       //res.status(200).send();
+      //res.status(200).send();
 
-//       User.findByIdAndUpdate(
-//         req.body.user._id,
-//         { $addToSet: { activitiesAttending: updatedActivity} },
-//         { new: true }
-//       ).then((updatedUser) => {
-//         console.log ('I AM THE UPDATED USER OF THE BACKEND:',updatedUser)
+      User.findByIdAndUpdate(
+        req.body.user._id,
+        { $addToSet: { activitiesAttending: updatedActivity} },
+        { new: true }
+      ).then((updatedUser) => {
+        console.log ('I AM THE UPDATED USER OF THE BACKEND:',updatedUser)
         
-//         res.status(200).send(updatedActivity)
-//       });
+        res.status(200).send(updatedActivity)
+      });
       
-//     })
+    })
 
-//     .catch((error) => {
-//       console.log("Error while updating activity: ", error);
-//       res.status(400).json({
-//         errorMessage: error,
-//       });
-//     });
-// });
+    .catch((error) => {
+      console.log("Error while updating activity: ", error);
+      res.status(400).json({
+        errorMessage: error,
+      });
+    });
+});
 
-//SEARCH PAGES //////////////////////////////////
 
-router.post('/search', (req, res) => {
-    console.log ('I AM THE SEARCHING ON THE CLIENT SIDE', 'req.body:', req.body)
-    const {destination,startDate,endDate,type} = req.body;
-    console.log('destination:', destination);
-
-    /*Adding conditional statements in order one, two or 3 parameters had passed, retrieved always a result
-      If ony destination is passed        Activity.find({ destination : destination })
-      If destination and type is passed   Activity.find({ destination : destination, type : type })
-    */
-
-    const findParams = {};
-
-    if (destination !== '') {
-      findParams.destination = destination;
-    }
-    if (type !== '') {
-      findParams.type = type;
-    }
-    // if (startDate !== '') {
-    //   findParams.startDate = startDate;
-    // }
-    // if (endDate !== '') {
-    //   findParams.endDate = endDate;
-    // }
-
-    //if (startDate ==
-    
-    
-    Activity.find(findParams)
-      .then((activitiesFromDB) => {
-        console.log ('activitiesFromDB:',activitiesFromDB)
-        res.status(200).send(activitiesFromDB);
-      }) .catch((error) => {
-        console.log("Error while searching activities: ", error);
-        res.status(400).json({
-          errorMessage: error,
-        });
-        });
-      })
 
 module.exports = router;
