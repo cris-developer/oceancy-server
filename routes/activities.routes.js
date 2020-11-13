@@ -55,10 +55,10 @@ router.post('/search', (req, res) => {
   if (type !== '') {
     findParams.type = type;
   }
-  if (startDate !== '') {
+  if (startDate ) {
     findParams.startDate = {$lt:startDate} ;
   }
-  if (endDate !== '') {
+  if (endDate ) {
     findParams.endDate = {$gt:endDate};
   }
 
