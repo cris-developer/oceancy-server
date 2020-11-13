@@ -191,20 +191,9 @@ router.post("/profile/edit/:id", (req, res, next) => {
     .findById({ _id: id })
     .then((session) => {
       console.log ('IAM THE SESSION ON THE UPDATE ID:',session)
-
-      const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-      if (!regex.test(password)) {
-        res.status(200).json({
-          errorMessage:
-            "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.",
-        });
-        return;
-      }
     
-      bcryptjs
-        .genSalt(saltRounds)
-        .then((salt) => bcryptjs.hash(password, salt))
-        .then((hashedPassword) => {
+      if (password === '') {
+
         User
         .findByIdAndUpdate(
           {
@@ -213,7 +202,6 @@ router.post("/profile/edit/:id", (req, res, next) => {
             fullName: fullName, 
             email : email,
             favoriteActivity:favoriteActivity, 
-            password: hashedPassword,
             level: level,
             photoUrl: photoUrl
           },
@@ -228,6 +216,47 @@ router.post("/profile/edit/:id", (req, res, next) => {
             errorMessage: error,
           });
         });
+      
+      } else {
+
+        const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+      if (!regex.test(password)) {
+        res.status(200).json({
+          errorMessage:
+            "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.",
+        });
+        return;
+      }
+
+        bcryptjs
+        .genSalt(saltRounds)
+        .then((salt) => bcryptjs.hash(password, salt))
+        .then((hashedPassword) => {
+
+          User
+          .findByIdAndUpdate(
+            {
+              _id: session.userId }, 
+            {
+              fullName: fullName, 
+              email : email,
+              favoriteActivity:favoriteActivity, 
+              password: hashedPassword,
+              level: level,
+              photoUrl: photoUrl
+            },
+            { new: true }
+          )
+          .then((userFromDB) => {
+            console.log ('userFromDB:',userFromDB)
+            res.status(200).json(userFromDB);
+          })
+          .catch((error) => {
+            res.status(500).json({
+              errorMessage: error,
+            });
+          });
+        
         })
         .catch((error) => {
           if (error instanceof mongoose.Error.ValidationError) {
@@ -241,6 +270,9 @@ router.post("/profile/edit/:id", (req, res, next) => {
             res.status(500).json({ errorMessage: error });
           }
         }); 
+
+
+      }
 
     }) 
     
