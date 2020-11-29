@@ -10,18 +10,7 @@ const userSchema = new Schema(
       required: [true, 'Full name is required.'],
       unique: true
     },
-    // name: {
-    //   firstName: {
-    //     type: String,
-    //     trim: true,
-    //     required: [true, "Firstname is required."],
-    //   },
-    //   lastName: {
-    //     type: String,
-    //     trim: true,
-    //     required: [true, "Lastname is required."],
-    //   },
-    // },
+    
     email: {
       type: String,
       required: [true, 'Email is required.'],

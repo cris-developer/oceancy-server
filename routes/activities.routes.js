@@ -222,7 +222,7 @@ router.post("/:id", (req, res) => {
 
   Activity.findByIdAndUpdate(
     id,
-    { $addToSet: { attendees: [req.body.user] } },
+    { $addToSet: { attendees : [req.body.user] } },
     { new: true }
   )
     .populate ('host')
